@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('review', function (Blueprint $table) {
             $table->id();
-            $table->string('usermname')->unique();
+            $table->string('username')->unique();
             $table->text('description')->nullable(false);
         });
     }
