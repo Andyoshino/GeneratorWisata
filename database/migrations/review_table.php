@@ -14,9 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('review', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id')->unique();
             $table->string('username')->unique();
+            $table->string('tempatwisata')->nullable(false);
             $table->text('description')->nullable(false);
+            $table->timestamps();
         });
     }
 

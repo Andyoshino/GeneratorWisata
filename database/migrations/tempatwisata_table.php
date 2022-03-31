@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tempatwisata', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('city');
-            $table->text('description')->nullable(true);
+            $table->increments('id')->unique();
+            $table->string('name')->unique()->nullable(false);
+            $table->string('city')->nullable(false);
+            $table->text('description')->nullable(false);
+            $table->timestamps();
         });
     }
 
