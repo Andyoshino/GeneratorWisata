@@ -61,9 +61,9 @@ class TempatWisataController extends Controller
             'city' => $request->city,
             'description' => $request->description
         );
-        TempatWisata::create($values);
+        
+        return TempatWisata::create($values);
 
-        return $request;
     }
 
     /**
