@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TempatWisata;
 use App\Http\Requests\StoreTempatWisataRequest;
 use App\Http\Requests\UpdateTempatWisataRequest;
+use App\Http\Controllers\TempatWisataController;
 use Illuminate\Http\Request;
 
 class TempatWisataController extends Controller
@@ -14,10 +15,11 @@ class TempatWisataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+
+    public function index() {
         $tempatWisata = TempatWisata::all();
-        return $tempatWisata;
+        
+        return (new ResponseController)->toResponse($tempatWisata, 200);
     }
 
 
@@ -29,7 +31,12 @@ class TempatWisataController extends Controller
      */    
     public function view($id) {
         $tempatWisata = TempatWisata::find($id);
-        return $tempatWisata;
+
+        if (isset($tempatWisata)) {
+            return (new ResponseController)->toResponse($tempatWisata, 200);
+        }
+
+        return (new ResponseController)->toResponse($tempatWisata, 404, ["Tempat wisata dengan id " . $id . " tidak dapat ditemukan..."]);
     }
 
     /**
@@ -61,9 +68,8 @@ class TempatWisataController extends Controller
             'city' => $request->city,
             'description' => $request->description
         );
-        
-        return TempatWisata::create($values);
 
+        return (new ResponseController)->toResponse(TempatWisata::create($values), 200);
     }
 
     /**
@@ -105,11 +111,16 @@ class TempatWisataController extends Controller
         ]);
 
         $tempatWisata = TempatWisata::find($id);
+
+        if (!isset($tempatWisata)) {
+            return (new ResponseController)->toResponse($tempatWisata, 404);
+        }
+
         $tempatWisata->name = $request->name;
         $tempatWisata->city = $request->city;
         $tempatWisata->description = $request->description;
         $tempatWisata->save();
-        return $tempatWisata;
+        return (new ResponseController)->toResponse($tempatWisata, 200);
     }
 
     /**
@@ -121,7 +132,12 @@ class TempatWisataController extends Controller
     public function delete($id)
     {
         $tempatWisata = TempatWisata::find($id);
-        $tempatWisata->delete();
-        return true;
+
+        if (isset($tempatWisata)) {
+            return (new ResponseController)->toResponse($tempatWisata->delete(), 200);
+        }
+        
+        return (new ResponseController)->toResponse(null, 404);
+
     }
 }
