@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TempatWisata extends Model
 {
+    public $timestamps = false;
+    
     protected $table = "tempatwisata";
 
     protected $fillable = ['name', 'city', 'description'];

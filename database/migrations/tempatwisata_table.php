@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('tempatwisata', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->string('name')->unique()->nullable(false);
+            $table->string('name')->nullable(false);
             $table->string('city')->nullable(false);
-            $table->text('description')->nullable(false);
-            $table->timestamps();
+            $table->text('description');
         });
     }
 
