@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\UserController;
 use App\Http\Controllers\TempatWisataController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,14 @@ Route::get('/', function () {
 });
 
 
-// Tempat Wisata
+// User
+Route::post('/user', [UserController::class, 'store']);
+Route::get('/user', [UserController::class, 'index']);
+Route::get('/user/{username}', [UserController::class, 'view']);
+Route::put('/user/{username}', [UserController::class, 'update']);
+Route::delete('/user/{username}', [UserController::class, 'delete']);
 
+// Tempat Wisata
 Route::post('/tempat-wisata', [TempatWisataController::class, 'store']);
 Route::get('/tempat-wisata', [TempatWisataController::class, 'index']);
 Route::get('/tempat-wisata/{id}', [TempatWisataController::class, 'view']);
