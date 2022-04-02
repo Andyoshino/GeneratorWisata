@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('review', function (Blueprint $table) {
             $table->increments('id')->unique();
             $table->string('username')->unique();
-            $table->string('tempatwisata')->nullable(false);
+            $table->string('id_tempatwisata')->nullable(false);
             $table->text('description')->nullable(false);
-            $table->timestamps();
         });
     }
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TempatWisata;
 use App\Http\Requests\StoreTempatWisataRequest;
 use App\Http\Requests\UpdateTempatWisataRequest;
-use App\Http\Controllers\TempatWisataController;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class TempatWisataController extends Controller
@@ -57,18 +57,23 @@ class TempatWisataController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name' => 'required',
-            'city' => 'required',
-            'description' => 'required'
-        ]);
-
         $values = array (
             'name' => $request->name,
             'city' => $request->city,
             'description' => $request->description
         );
-
+        $rules = [
+            'name' => 'required',
+            'city' => 'required',
+            'description' => 'required'
+        ];
+        $errormsg = [
+            'required' => 'The :attribute field is required'
+        ];
+        $validation = Validator::make($values, $rules, $errormsg);
+        if ($validation->fails()) {
+            return (new ResponseController)->toResponse(null, 400, ["ada field kosong!"]); 
+        }
         return (new ResponseController)->toResponse(TempatWisata::create($values), 200);
     }
 
@@ -104,12 +109,23 @@ class TempatWisataController extends Controller
      */
     public function update($id, Request $request)
     {
-        $this->validate($request,[
+        $values = array (
+            'name' => $request->name,
+            'city' => $request->city,
+            'description' => $request->description
+        );
+        $rules = [
             'name' => 'required',
             'city' => 'required',
             'description' => 'required'
-        ]);
-
+        ];
+        $errormsg = [
+            'required' => 'The :attribute field is required'
+        ];
+        $validation = Validator::make($values, $rules, $errormsg);
+        if ($validation->fails()) {
+            return (new ResponseController)->toResponse(null, 400, ["ada field kosong!"]); 
+        }
         $tempatWisata = TempatWisata::find($id);
 
         if (!isset($tempatWisata)) {
