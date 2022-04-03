@@ -16,17 +16,25 @@
 
         <div class="p-8 w-[326px]">
 
-            <div class="mb-6 @if ($title == 'Akun User') {{ 'font-bold' }} @endif">
-                Akun user
-            </div>
+            <form action="/dashboard">
+                <div class="mb-6">
+                    <button type="submit" class="@if ($title == 'Akun User') {{ 'font-bold' }} @endif">
+                        Akun user
+                    </button>
+                </div>
+            </form>
 
             <div class="mb-6 @if ($title == 'Review') {{ 'font-bold' }} @endif">
                 Review
             </div>
 
-            <div class="mb-6 @if ($title == 'Tempat Wisata') {{ 'font-bold' }} @endif">
-                Tempat wisata
-            </div>
+            <form action="/dashboard?type=tempat_wisata">
+                <div class="mb-6">
+                    <button type="submit" class="@if ($title == 'Tempat Wisata') {{ 'font-bold' }} @endif">
+                        Tempat wisata
+                    </button>
+                </div>
+            </form>
 
         </div>
 
@@ -40,10 +48,10 @@
                 <div class="basis-1/2 flex justify-end">
                     <div class="border-b-2 w-fit flex gap-4">
 
-                        <input id="username" type="text" placeholder="@if ($title == 'Akun User') {{ 'Cari username' }} @endif
-                            @if ($title == 'Review') {{ 'Cari review' }} @endif
-                            @if ($title == 'Tempat Wisata') {{ 'Cari tempat wisata' }} @endif"
-                            class="input-box">
+                        <input id="username" type="text"
+                            @if ($title == 'Tempat Wisata') placeholder="Cari tempat wisata" @endif
+                            @if ($title == 'Akun User') placeholder="Cari user" @endif
+                            @if ($title == 'Review') placeholder="Cari review" @endif class="input-box">
 
                         <div class="scale-75 w-fit">
                             @include('reusable_component.search_svg')

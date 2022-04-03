@@ -33,7 +33,7 @@ class DashboardController extends Controller
 
                 $title .= 'Tempat Wisata';
 
-                return view('dashboard_tempat_wisata', [
+                return view('dashboard_tempatwisata', [
                     'title' => $title
                 ]);
             }
