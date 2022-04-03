@@ -17,4 +17,10 @@
             Login
         </button>
     </div>
+
+    <script>
+        $("button").click(function() {
+            location.href = '/login';
+        });
+    </script>
 @endsection
