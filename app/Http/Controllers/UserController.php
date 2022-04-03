@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
-        return $user;
+        return (new ResponseController)->toResponse($user, 200);
     }
 
 
@@ -27,7 +27,12 @@ class UserController extends Controller
      */    
     public function view($username) {
         $user = User::find($username);
-        return $user;
+
+        if (isset($user)) {
+            return (new ResponseController)->toResponse($user, 200);
+        }
+
+        return (new ResponseController)->toResponse($user, 404, ["User dengan username " . $username . " tidak dapat ditemukan..."]);
     }
 
     /**
@@ -48,21 +53,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'username' => 'required',
-            'password' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required'
-
-        ]);
-
         $values = array (
             'username' => $request->username,
             'password' => $request->password,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name
         );
-        return User::create($values);
+
+        $rules = [
+            'username' => 'required',
+            'password' => 'required',
+            'first_name' => 'required'
+        ];
+        $errormsg = [
+            'required' => 'The :attribute field is required'
+        ];
+        $validation = Validator::make($values, $rules, $errormsg);
+        $user = User::find($request->username);
+        if (isset($user)){
+            return (new ResponseController)->toResponse(null, 400, ["username sudah dipakai!"]);
+        }
+        if ($validation->fails()) {
+            return (new ResponseController)->toResponse(null, 400, ["ada field kosong!"]); 
+        }
+        return (new ResponseController)->toResponse(User::create($values), 200);
     }
 
     /**
@@ -97,17 +111,27 @@ class UserController extends Controller
      */
     public function update($username, Request $request)
     {
-        $this->validate($request,[
-            'username' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required'
-        ]);
 
         $user = User::find($username);
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+
+        if (!isset($user)) {
+            return (new ResponseController)->toResponse($user, 404, ["User dengan username " . $username . " tidak dapat ditemukan..."]);
+        }
+        if(isset($request->username)){
+            $user = User::find($request->username);
+            if (isset($user) && $user->username != $request->username){
+                return (new ResponseController)->toResponse(null, 400, ["username sudah dipakai!"]);
+            }
+            $user->username = $request->username;
+        }
+        if(isset($request->first_name)){
+            $user->first_name = $request->first_name;
+        }
+        if(isset($request->last_name)){
+            $user->last_name = $request->last_name;
+        }
         $user->save();
-        return $user;
+        return (new ResponseController)->toResponse($user, 200);
     }
 
     /**
@@ -119,7 +143,11 @@ class UserController extends Controller
     public function delete($username)
     {
         $user = User::find($username);
-        $user->delete();
-        return true;
+
+        if (isset($user)) {
+            return (new ResponseController)->toResponse($user->delete(), 200);
+        }
+
+        return (new ResponseController)->toResponse(null, 404 , ["User dengan username " . $username . " tidak dapat ditemukan..."]);
     }
 }
