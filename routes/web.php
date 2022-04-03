@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +16,14 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-Route::get('/', function () {
-    return view('landing', [
-        'title' => 'Genewisa'
-    ]);
-});
+Route::get('/', [LandingController::class, 'index']);
 
-
-Route::get('/login', function () {
-    return view('login', [
-        'title' => 'Login Page'
-    ]);
-});
+Route::get('/login', [LandingController::class, 'login']);
 
 Route::post('/login', [LoginController::class, 'authen']);
+
+Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 

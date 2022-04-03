@@ -22,12 +22,15 @@
                 @include('reusable_component.password_svg')
             </div>
 
-            <input id="password" type="text" placeholder="Password" class="input-box">
+            <input id="password" type="password" placeholder="Password" class="input-box">
         </div>
 
         <button class="mt-6 text-2xl text-white bg-gradient-to-br from-indigo-400 to-teal-400 rounded-xl px-16 py-2">
             Login
         </button>
+
+
+
     </div>
 
     <script>
@@ -43,9 +46,13 @@
                 url: '/login',
                 data: request,
                 success: function(data) {
-                    console.log(data);
+                    location.href = '/dashboard';
+                },
+                error: function(data) {
+                    console.log(data.responseJSON);
                 }
             });
+
         });
     </script>
 @endsection
