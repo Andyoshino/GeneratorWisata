@@ -118,8 +118,8 @@ class UserController extends Controller
             return (new ResponseController)->toResponse($user, 404, ["User dengan username " . $username . " tidak dapat ditemukan..."]);
         }
         if(isset($request->username)){
-            $user = User::find($request->username);
-            if (isset($user) && $user->username != $request->username){
+            $usertemp = User::find($request->username);
+            if (isset($usertemp) && $user->username != $usertemp->username){
                 return (new ResponseController)->toResponse(null, 400, ["username sudah dipakai!"]);
             }
             $user->username = $request->username;
