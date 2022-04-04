@@ -1,4 +1,4 @@
-# GeneratorWisata
+# Genewisa
 
 Sebuah aplikasi yang memberi rekomendasi wisata.
 
